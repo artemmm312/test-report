@@ -62,6 +62,7 @@ $('#myB').on('click', function () {  //добавление в список
 	names.length = 0;
 	$('#myS').selectpicker('deselectAll');
 
+
 	pushUsers();
 	disOption();
 	updateUsers();
