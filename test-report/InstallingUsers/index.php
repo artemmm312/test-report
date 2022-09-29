@@ -1,6 +1,6 @@
-<?php
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php"); ?>
 
+<?php
 \Bitrix\Main\Loader::includeModule('crm');
 
 use CCrmDeal;
