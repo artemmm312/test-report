@@ -60,7 +60,7 @@ while ($item = $usersData->Fetch()) {
     <div class="row">
         <ul class="user_list">
           <?php
-          $fd = fopen("usersList/usersList.json", 'r+') or die("не удалось открыть файл");
+          $fd = fopen("usersList/usersList.json", 'r') or die("не удалось открыть файл");
           $usersList = null;
           while(!feof($fd))
           {
@@ -72,7 +72,8 @@ while ($item = $usersData->Fetch()) {
           for ($i = 0; $i < $count; $i++) {
               $value = $usersList[$i]['id'];
               $text = $usersList[$i]['name'];
-	          echo "<li id='$value' value='$value'>" . $text . "<button id='closeB' type='button' class='btn-close' aria-label='Close' onclick='deleteUser($value);'></button></li>";
+	          echo "<li id='$value' value='$value'>" . $text . "<button id='closeB' type='button' class='btn-close' aria-label='Close'></button></li>";
+              //onclick='deleteUser($value);'
           }
           ?>
         </ul>
