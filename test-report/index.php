@@ -6,10 +6,10 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 use CCrmDeal;
 use CUser;
 
-$user = CUser::GetList($by, $order, ['ACTIVE' => 'Y']);
+$usersData = CUser::GetList($by, $order, ['ACTIVE' => 'Y']);
 //$deal = CCrmDeal::GetList([], []);
 $fio = [];
-while ($item = $user->Fetch()) {
+while ($item = $usersData->Fetch()) {
 	$fio[$item['ID']] = "{$item['NAME']} " . $item['LAST_NAME'];
 }
 ?>
@@ -65,6 +65,7 @@ while ($item = $user->Fetch()) {
           while(!feof($fd))
           {
 	          $usersList = json_decode(fgets($fd), true);
+              //var_dump($usersList);
           }
           fclose($fd);
           $count = count($usersList);

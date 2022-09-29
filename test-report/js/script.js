@@ -11,42 +11,42 @@ function pushUsers () {  // запись в массив порльзовыат�
 	}
 }
 pushUsers();
+
 function disOption () { //отключение пунктов в селекте которые есть в списке
-	let userL = users.length;
-	console.log(users);
-	let selectL = $('#myS option').length;
-	for (let i = 0; i < userL; i++) {
-		for (let j = 0; j < selectL; j++) {
-			if (users[i].id == $('#myS option').eq(j).val()) {
-				console.log($('#myS option').eq(j).val());
-				//$('#myS option').eq(j).attr('disabled', true);
-				$('#myS option').eq(j).prop('disabled', true);
-				break;
-			}
-		}
+	$('#myS option').prop('disabled', false);
+	for (let user of users) {
+				$('#myS').find(`[value=${user['id']}]`).prop('disabled', true);
 	}
-	//$('#myS').selectpicker('refresh');
 	$('#myS').selectpicker('destroy');
 	$('#myS').selectpicker('render');
+}
+disOption();
+
+const deleteUser = (id) => { //удаление пользователй из списка по кнопке
+	$('#' + id).remove();
+	pushUsers();
+	disOption();
+	updateUsers();
 }
 
-function test () {
-	for (let user of users) {
-		$('#myS').find(`[value=${user['id']}]`).prop('disabled', true);
-	}
-	$('#myS').selectpicker('destroy');
-	$('#myS').selectpicker('render');
+function updateUsers () { //обнавление пользователей на сервере
+	users = JSON.stringify(users);
+	$.ajax({
+		type: 'POST',
+		url: 'handler.php',
+		data: {'users': users},
+		success: function (response) {
+			console.log(response);
+		},
+	})
 }
-test();
-//disOption();
 
 /*$(document).ready(function () {
 
 });*/
 
-//console.log($('#myS option').length);
 $('#myS').change(function () { //выбор из селекта
-	usersID = $('#myS').val();
+	usersID = $('#myS').val(); //массив id выбранных пользователей
 	if (usersID !== undefined) {
 		usersID.length > 0 ? $('#myB').prop('disabled', false) : $('#myB').prop('disabled', true);
 	}
@@ -54,11 +54,8 @@ $('#myS').change(function () { //выбор из селекта
 
 $('#myB').on('click', function () {  //добавление в список
 	for (let i = 0; i < usersID.length; i++) {
-		names.push($(`#myS option[value=${usersID[i]}]`).text())
+		names.push($(`#myS option[value=${usersID[i]}]`).text()) //массив фио выбранных пользователей
 	}
-	//console.log(usersID);
-	//console.log(names);
-
 	for (let i = 0; i < names.length; i++) {
 		$('.user_list').append(`<li id="${usersID[i]}" value="${usersID[i]}">${names[i]}<button id="closeB" type="button" class="btn-close" aria-label="Close" onclick="deleteUser(${usersID[i]});"></button></li>`);
 	}
@@ -66,18 +63,14 @@ $('#myB').on('click', function () {  //добавление в список
 	$('#myS').selectpicker('deselectAll');
 
 	pushUsers();
-	//console.log(users);
-	test();
-	//disOption();
-	//$('#myS').selectpicker('refresh');
-	//$('#myS').selectpicker('render');
-
-
+	disOption();
+	updateUsers();
 	/*	for (let i = 0; i <usersID.length; i++) {
 			users.push({id: usersID[i], name: names[i]})
 		}*/
 	//console.log(users);
 	//users = JSON.stringify(users);
+
 	/*$.ajax({
 		type: 'POST',
 		url: 'handler.php',
@@ -87,7 +80,5 @@ $('#myB').on('click', function () {  //добавление в список
 		},
 	})*/
 })
-const deleteUser = (id) => {
-	$('#' + id).remove();
-}
+
 
