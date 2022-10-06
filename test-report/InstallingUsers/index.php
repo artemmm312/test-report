@@ -3,11 +3,7 @@
 <?php
 \Bitrix\Main\Loader::includeModule('crm');
 
-use CCrmDeal;
-use CUser;
-
 $usersData = CUser::GetList($by, $order, ['ACTIVE' => 'Y']);
-//$deal = CCrmDeal::GetList([], []);
 $fio = [];
 while ($item = $usersData->Fetch()) {
 	$fio[$item['ID']] = "{$item['NAME']} " . $item['LAST_NAME'];
@@ -73,7 +69,6 @@ while ($item = $usersData->Fetch()) {
               $value = $usersList[$i]['id'];
               $text = $usersList[$i]['name'];
 	          echo "<li id='$value' value='$value'>" . $text . "<button id='closeB' type='button' class='btn-close' aria-label='Close'></button></li>";
-              //onclick='deleteUser($value);'
           }
           ?>
         </ul>
