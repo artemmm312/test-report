@@ -169,11 +169,11 @@ var_dump($userStat);*/
             <tfoot>
                 <tr>
                     <td>Всего закрыто:</td>
-                    <td class="Total" colspan="9"></td>
+                    <td class="Total text-center" colspan="9"></td>
                 </tr>
                 <tr>
                     <td>Закрыто на сумму:</td>
-                    <td class="Sum" colspan="9"></td>
+                    <td class="Sum text-center" colspan="9"></td>
                 </tr>
             </tfoot>
         </table>
