@@ -19,11 +19,27 @@ foreach ($usersList as $key => $value) {
 	$usersID[] = $value['id'];
 }
 
-$Deal = CCrmDeal::GetListEx([],
-	['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID],
-	false,
-	false,
-	['*', 'UF_CRM_1663748579248']);
+$firstDate = '';
+$lastDate = '';
+if (!empty($_POST['first_date']) && !empty($_POST['last_date'])) {
+	$firstDate = date("d.m.Y", strtotime($_POST['first_date']));
+	$lastDate = date("d.m.Y", strtotime($_POST['first_date']));
+}
+
+if ($firstDate !== '' && $lastDate !== '') {
+	$Deal = CCrmDeal::GetListEx([],
+		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID, 'BEGINDATE' => $firstDate, 'CLOSEDATE' => $lastDate],
+		false,
+		false,
+		['*', 'UF_CRM_1663748579248']);
+} else {
+	$Deal = CCrmDeal::GetListEx([],
+		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID],
+		false,
+		false,
+		['*', 'UF_CRM_1663748579248']);
+}
+
 $dealData = [];
 while ($record = $Deal->Fetch()) {
 	if ($record['UF_CRM_1663748579248'] === '5922') {

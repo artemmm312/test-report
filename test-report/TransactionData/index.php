@@ -1,14 +1,14 @@
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php"); ?>
 
 <?php
-/*\Bitrix\Main\Loader::includeModule('crm');
+\Bitrix\Main\Loader::includeModule('crm');
 
-use Bitrix\Crm\Category\DealCategory;
-
-$typeClient = ['ИП' => '5922', 'Юр.лицо' => '5921', 'Физ.лицо' => '5920'];
+/*use Bitrix\Crm\Category\DealCategory;
 $StageList = DealCategory::getStageList('16');
+$typeClient = ['ИП' => '5922', 'Юр.лицо' => '5921', 'Физ.лицо' => '5920'];*/
 
-$fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
+
+/*$fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
 $usersList = null;
 while (!feof($fd)) {
 	$usersList = json_decode(fgets($fd), true);
@@ -51,9 +51,10 @@ while ($row = $Deal->Fetch()) {
 		'ID клиента' => $row['CONTACT_ID'],
 		'Тип клиента' => $row['UF_CRM_1663748579248'],
 		'Стадия' => $row['STAGE_SEMANTIC_ID']];
+	$dealData["{$row['ASSIGNED_BY_NAME']} {$row['ASSIGNED_BY_LAST_NAME']}"][] = $row;
 }
-var_dump($dealData);
-$userStat = [];
+var_dump($dealData);*/
+/*$userStat = [];
 $mask = ['Employee' => '', 'U_c' => 0, 'U_s' => 0, 'F_c' => 0, 'F_s' => 0, 'I_c' => 0, 'I_s' => 0, 'Stock' => 0, 'B_c' => 0, 'B_s' => 0];
 foreach ($dealData as $user => $deals) {
 	$statistics = $mask;
@@ -84,8 +85,8 @@ foreach ($dealData as $user => $deals) {
 		}
 	}
 	$userStat[] = $statistics;
-}
-var_dump($userStat);*/
+}*/
+//var_dump($userStat);
 
 //'UF_CRM_1663748579248' поля тип клиента
 ?>
@@ -167,14 +168,14 @@ var_dump($userStat);*/
             <tbody class="table-group-divider">
             </tbody>
             <tfoot>
-                <tr>
-                    <td>Всего закрыто:</td>
-                    <td class="Total text-center" colspan="9"></td>
-                </tr>
-                <tr>
-                    <td>Закрыто на сумму:</td>
-                    <td class="Sum text-center" colspan="9"></td>
-                </tr>
+            <tr>
+                <td>Всего закрыто:</td>
+                <td class="Total text-center" colspan="9"></td>
+            </tr>
+            <tr>
+                <td>Закрыто на сумму:</td>
+                <td class="Sum text-center" colspan="9"></td>
+            </tr>
             </tfoot>
         </table>
     </div>
