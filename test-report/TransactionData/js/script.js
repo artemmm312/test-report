@@ -82,32 +82,84 @@ function test() {
 		"language": {
 			"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json"
 		}, //язык интерфейса самой таблицы
-		//'processing': true, //индикатор загрузки
+		'processing': true, //индикатор загрузки
 		//'serverSide': true, //обработка на стороне сервера
-		//'serverMethod': 'post',
-		//'ajax': {
-			//'url': 'handler.php ', //источник данных ajax для таблицы
-		//},
+		'serverMethod': 'post',
+		'ajax': {
+			'url': 'handler.php ', //источник данных ajax для таблицы
+		},
 		//'data': { 'first_date': first_date, 'last_date': last_date },
 		//},
 
 		'columns': [
-			{data: 'employee'},
+			{data: 'Employee'},
 			{data: 'U_c'},
 			{data: 'U_s'},
 			{data: 'F_c'},
 			{data: 'F_s'},
 			{data: 'I_c'},
 			{data: 'I_s'},
-			{data: 'stock'},
+			{data: 'Stock'},
 			{data: 'B_c'},
 			{data: 'B_s'},
 		],
 		"drawCallback": function (settings) {
-			let tt = settings.json.aaData;
-			console.log(tt);
+			/*$.fn.dataTable.Api.register('sum()', function () {
+				let sum = 0;
+				for (let i = 0, ien = this.length; i < ien; i++) {
+					sum += this[i];
+				}
+				return sum;
+			});
+			let api = this.api();
+			let U_total = api.column(1).data().sum();
+			let F_total = api.column(3).data().sum();
+			let I_total = api.column(5).data().sum();
+			$('.Total').html(U_total + F_total + I_total).draw();
+			let U_sum = api.column(2).data().sum();
+			let F_sum = api.column(4).data().sum();
+			let I_sum = api.column(6).data().sum();
+			$('.Sum').html(U_sum + F_sum + I_sum).draw();*/
+		},
+		"footerCallback": function (tfoot, data, start, end, display) {
+			/*$.fn.dataTable.Api.register('sum()', function () {
+				let sum = 0;
+				for (let i = 0, ien = this.length; i < ien; i++) {
+					sum += this[i];
+				}
+				return sum;
+			});
+			let api = this.api();
+			let U_total = api.column(1).data().sum();
+			let F_total = api.column(3).data().sum();
+			let I_total = api.column(5).data().sum();
+			$('.Total').html(U_total + F_total + I_total);
+			let U_sum = api.column(2).data().sum();
+			let F_sum = api.column(4).data().sum();
+			let I_sum = api.column(6).data().sum();
+			$('.Sum').html(U_sum + F_sum + I_sum);*/
 		}
 	});
 }
 
 test();
+
+var table = $('#myTable').DataTable();
+table.on('search.dt', function () {
+	$.fn.dataTable.Api.register('sum()', function () {
+		let sum = 0;
+		for (let i = 0, ien = this.length; i < ien; i++) {
+			sum += this[i];
+		}
+		return sum;
+	});
+	let api = $('#myTable').dataTable().api();
+	let U_total = api.column(1).data().sum();
+	let F_total = api.column(3).data().sum();
+	let I_total = api.column(5).data().sum();
+	$('.Total').html(U_total + F_total + I_total)
+	let U_sum = api.column(2).data().sum();
+	let F_sum = api.column(4).data().sum();
+	let I_sum = api.column(6).data().sum();
+	$('.Sum').html(U_sum + F_sum + I_sum)
+})

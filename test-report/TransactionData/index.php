@@ -1,7 +1,7 @@
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php"); ?>
 
 <?php
-\Bitrix\Main\Loader::includeModule('crm');
+/*\Bitrix\Main\Loader::includeModule('crm');
 
 use Bitrix\Crm\Category\DealCategory;
 
@@ -14,7 +14,6 @@ while (!feof($fd)) {
 	$usersList = json_decode(fgets($fd), true);
 }
 fclose($fd);
-//var_dump($usersList);
 
 $usersID = [];
 foreach ($usersList as $key => $value) {
@@ -53,48 +52,40 @@ while ($row = $Deal->Fetch()) {
 		'Тип клиента' => $row['UF_CRM_1663748579248'],
 		'Стадия' => $row['STAGE_SEMANTIC_ID']];
 }
-//var_dump($dealData);
+var_dump($dealData);
 $userStat = [];
-//$mask = ['Employee' => '', 'U-c' => 0, 'U-s' => 0, 'F-c' => 0, 'F-s' => 0, 'I-c' => 0, 'I-s' => 0, 'Stock' => 0, 'B-c' => 0, 'B-s' => 0];
-$mask = ['Юр.лицо' => ['Кол-во' => 0, 'Сумма' => 0],
-	'Физ.лицо' => ['Кол-во' => 0, 'Сумма' => 0],
-	'ИП' => ['Кол-во' => 0, 'Сумма' => 0],
-	'На складе' => 0,
-	'Брак' => ['Кол-во' => 0, 'Сумма' => 0]];
+$mask = ['Employee' => '', 'U_c' => 0, 'U_s' => 0, 'F_c' => 0, 'F_s' => 0, 'I_c' => 0, 'I_s' => 0, 'Stock' => 0, 'B_c' => 0, 'B_s' => 0];
 foreach ($dealData as $user => $deals) {
 	$statistics = $mask;
-    var_dump($user);
 	foreach ($deals as $deal => $data) {
-		var_dump($deals);
-		var_dump($deal);
-		var_dump($data);
+        $statistics['Employee'] = $user;
 		if ($data['Стадия'] === 'Успешна') {
 			switch ($data['Тип клиента']) {
 				case 'Юр.лицо':
-					$statistics['Юр.лицо']['Кол-во'] += 1;
-					$statistics['Юр.лицо']['Сумма'] += $data['Сумма'];
+					++$statistics['U_c'];
+					$statistics['U_s'] += $data['Сумма'];
 					break;
 				case 'Физ.лицо':
-					$statistics['Физ.лицо']['Кол-во'] += 1;
-					$statistics['Физ.лицо']['Сумма'] += $data['Сумма'];
+					++$statistics['F_c'];
+					$statistics['F_s'] += $data['Сумма'];
 					break;
 				case 'ИП':
-					$statistics['ИП']['Кол-во'] += 1;
-					$statistics['ИП']['Сумма'] += $data['Сумма'];
+					++$statistics['I_c'];
+					$statistics['I_s'] += $data['Сумма'];
 					break;
 			}
 		}
 		if ($data['Стадия'] === 'Провалена') {
-			$statistics['Брак']['Кол-во'] += 1;
-			$statistics['Брак']['Сумма'] += $data['Сумма'];
+			++$statistics['B_c'];
+			$statistics['B_s'] += $data['Сумма'];
 		}
 		if ($data['Стадия'] === 'На складе') {
-			++$statistics['На складе'];
+			++$statistics['Stock'];
 		}
-		$userStat[$user] = $statistics;
 	}
+	$userStat[] = $statistics;
 }
-var_dump($userStat);
+var_dump($userStat);*/
 
 //'UF_CRM_1663748579248' поля тип клиента
 ?>
@@ -169,7 +160,6 @@ var_dump($userStat);
                 <th>Сумма</th>
                 <th>Кол-во</th>
                 <th>Сумма</th>
-
                 <th>Кол-во</th>
                 <th>Сумма</th>
             </tr>
@@ -177,6 +167,14 @@ var_dump($userStat);
             <tbody class="table-group-divider">
             </tbody>
             <tfoot>
+                <tr>
+                    <td>Всего закрыто:</td>
+                    <td class="Total" colspan="9"></td>
+                </tr>
+                <tr>
+                    <td>Закрыто на сумму:</td>
+                    <td class="Sum" colspan="9"></td>
+                </tr>
             </tfoot>
         </table>
     </div>
