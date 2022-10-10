@@ -16,9 +16,7 @@ $(document).ready(function () {
 			let yData = [];
 			for (let key in chartData) {
 				xData.push(key);
-				console.log(xData);
 				yData.push(chartData[key]);
-				console.log(yData);
 			}
 
 			if (testChart) {

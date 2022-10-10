@@ -72,16 +72,16 @@ while ($record = $Deal->Fetch()) {
 				break;
 		}
 	}
-
-
-	$dealData["{$record['ASSIGNED_BY_NAME']} {$record['ASSIGNED_BY_LAST_NAME']}"][] = ['ID сделки' => $record['ID'],
+	$dealData["{$record['ASSIGNED_BY_NAME']} {$record['ASSIGNED_BY_LAST_NAME']}"][] = [
+		'ID сделки' => $record['ID'],
 		'Название сделки' => $record['TITLE'],
 		'Дата начала' => $record['BEGINDATE'],
 		'Дата закрытия' => $record['CLOSEDATE'],
 		'Сумма' => $record['OPPORTUNITY'],
 		'ID клиента' => $record['CONTACT_ID'],
 		'Тип клиента' => $record['UF_CRM_1663748579248'],
-		'Стадия' => $record['STAGE_SEMANTIC_ID']];
+		'Стадия' => $record['STAGE_SEMANTIC_ID']
+	];
 }
 $chartStage = ['Новая' => 0, 'В работе' => 0, 'Оплачено' => 0, 'На складе' => 0];
 $userStat = [];
