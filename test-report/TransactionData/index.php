@@ -5,7 +5,8 @@
 
 /*use Bitrix\Crm\Category\DealCategory;
 $StageList = DealCategory::getStageList('16');
-$typeClient = ['ИП' => '5922', 'Юр.лицо' => '5921', 'Физ.лицо' => '5920'];*/
+var_dump($StageList);*/
+//$typeClient = ['ИП' => '5922', 'Юр.лицо' => '5921', 'Физ.лицо' => '5920'];
 
 
 /*$fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
@@ -141,7 +142,7 @@ foreach ($dealData as $user => $deals) {
         </form>
     </div>
     <div class="container">
-        <table id="myTable" class="table table-hover table-bordered">
+        <table id="myTable" class="table table-hover table-bordered border border-dark">
             <thead class="align-middle">
             <tr>
                 <th class="text-center" rowspan="3">Сотрудники</th>
@@ -150,17 +151,17 @@ foreach ($dealData as $user => $deals) {
                 <th class="text-center" rowspan="2" colspan="2">Брак</th>
             </tr>
             <tr class="text-center">
-                <th class="text-center" colspan="2">Юр.лицо</th>
-                <th class="text-center" colspan="2">Физ.дицо</th>
-                <th class="text-center" colspan="2">ИП</th>
+                <th class="text-center" colspan="2" style="background-color: rgb(220,233,245)">Юр.лицо</th>
+                <th class="text-center" colspan="2" style="background-color: rgb(250,226,213)">Физ.дицо</th>
+                <th class="text-center" colspan="2" style="background-color: rgb(253,240,203)">ИП</th>
             </tr>
             <tr class="text-center">
-                <th>Кол-во</th>
-                <th>Сумма</th>
-                <th>Кол-во</th>
-                <th>Сумма</th>
-                <th>Кол-во</th>
-                <th>Сумма</th>
+                <th style="background-color: rgb(220,233,245)">Кол-во</th>
+                <th style="background-color: rgb(220,233,245)">Сумма</th>
+                <th style="background-color: rgb(250,226,213)">Кол-во</th>
+                <th style="background-color: rgb(250,226,213)">Сумма</th>
+                <th style="background-color: rgb(253,240,203)">Кол-во</th>
+                <th style="background-color: rgb(253,240,203)">Сумма</th>
                 <th>Кол-во</th>
                 <th>Сумма</th>
             </tr>
@@ -168,23 +169,24 @@ foreach ($dealData as $user => $deals) {
             <tbody class="table-group-divider">
             </tbody>
             <tfoot>
-            <tr>
+            <tr style="background-color: rgba(189,250,228,0.7)">
                 <td>Всего закрыто:</td>
                 <td class="Total text-center" colspan="9"></td>
             </tr>
-            <tr>
+            <tr style="background-color: rgba(101,192,103,0.7)">
                 <td>Закрыто на сумму:</td>
                 <td class="Sum text-center" colspan="9"></td>
             </tr>
             </tfoot>
         </table>
     </div>
-    <div class="container charts">
-        <div class="chart1">
-            <canvas id="testChart1"></canvas>
-        </div>
+
+    <div class="chart1">
+        <canvas id="testChart1"></canvas>
     </div>
+
     <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/schedule.js"></script>
     </body>
     </html>
 

@@ -1,17 +1,20 @@
 var first_date = '';
 var last_date = '';
 
-$('#Date').submit(function (e) {
-	e.preventDefault();
-	first_date = $("#first_date").val();
-	last_date = $("#last_date").val();
-	if (first_date != '' && last_date != '') {
-		$('#myTable').DataTable().destroy();
-		table(first_date, last_date);
-	} else {
-		$('#myTable').DataTable().destroy();
-		table();
-	}
+$(document).ready(function () {
+	table();
+	$('#Date').submit(function (e) {
+		e.preventDefault();
+		first_date = $("#first_date").val();
+		last_date = $("#last_date").val();
+		if (first_date != '' && last_date != '') {
+			$('#myTable').DataTable().destroy();
+			table(first_date, last_date);
+		} else {
+			$('#myTable').DataTable().destroy();
+			table();
+		}
+	});
 });
 
 function table(first_date = '', last_date = '') {
@@ -23,7 +26,7 @@ function table(first_date = '', last_date = '') {
 		//'serverSide': true, //обработка на стороне сервера
 		'serverMethod': 'post',
 		'ajax': {
-			'url': 'handler.php ', //источник данных ajax для таблицы
+			'url': 'handler.php', //источник данных ajax для таблицы
 			'data': {'first_date': first_date, 'last_date': last_date},
 		},
 		'columns': [
@@ -41,9 +44,17 @@ function table(first_date = '', last_date = '') {
 		"drawCallback": function (settings) {
 		},
 		"initComplete": function (settings, json) {
+			let api = $('#myTable').dataTable().api();
+			/*api.columns([1, 3, 5]).every(function () {
+					if (this !== undefined) {
+						console.log(this);
+						this.style.backgroundColor = '#DCE9F5FF';
+						//this.css("background-color", "#DCE9F5FF");
+					}
+			})*/
 		},
 		"footerCallback": function (tfoot, data, start, end, display) {
-			var api = $('#myTable').dataTable().api();
+			let api = $('#myTable').dataTable().api();
 			let Dtotal = 0;
 			api.columns([1, 3, 5], {order: 'current', search: 'applied', page: 'current'}).every(function () {
 				if (this.data().length) {
@@ -67,10 +78,6 @@ function table(first_date = '', last_date = '') {
 		},
 	});
 }
-
-$(document).ready(function () {
-	table();
-});
 
 
 /*$.fn.dataTable.Api.register('sum()', function () {

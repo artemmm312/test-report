@@ -56,11 +56,23 @@ while ($record = $Deal->Fetch()) {
 		$record['STAGE_SEMANTIC_ID'] = 'Успешна';
 	} elseif ($record['STAGE_SEMANTIC_ID'] === 'F') {
 		$record['STAGE_SEMANTIC_ID'] = 'Провалена';
-	} elseif ($record['STAGE_SEMANTIC_ID'] === 'P' && $record['STAGE_ID'] === 'C16:1') {
-		$record['STAGE_SEMANTIC_ID'] = 'На складе';
-	} else {
-		$record['STAGE_SEMANTIC_ID'] = 'В работе';
+	} elseif ($record['STAGE_SEMANTIC_ID'] === 'P') {
+		switch ($record['STAGE_ID']) {
+			case 'C16:NEW':
+				$record['STAGE_SEMANTIC_ID'] = 'Новая';
+				break;
+			case 'C16:PREPARATION':
+				$record['STAGE_SEMANTIC_ID'] = 'В работе';
+				break;
+			case 'C16:FINAL_INVOICE':
+				$record['STAGE_SEMANTIC_ID'] = 'Оплачено';
+				break;
+			case 'C16:1':
+				$record['STAGE_SEMANTIC_ID'] = 'На складе';
+				break;
+		}
 	}
+
 
 	$dealData["{$record['ASSIGNED_BY_NAME']} {$record['ASSIGNED_BY_LAST_NAME']}"][] = ['ID сделки' => $record['ID'],
 		'Название сделки' => $record['TITLE'],
@@ -71,41 +83,53 @@ while ($record = $Deal->Fetch()) {
 		'Тип клиента' => $record['UF_CRM_1663748579248'],
 		'Стадия' => $record['STAGE_SEMANTIC_ID']];
 }
-
+$chartStage = ['Новая' => 0, 'В работе' => 0, 'Оплачено' => 0, 'На складе' => 0];
 $userStat = [];
 $mask = ['Employee' => '', 'U_c' => 0, 'U_s' => 0, 'F_c' => 0, 'F_s' => 0, 'I_c' => 0, 'I_s' => 0, 'Stock' => 0, 'B_c' => 0, 'B_s' => 0];
 foreach ($dealData as $user => $deals) {
 	$statistics = $mask;
 	foreach ($deals as $deal => $data) {
 		$statistics['Employee'] = $user;
-		if ($data['Стадия'] === 'Успешна') {
-			switch ($data['Тип клиента']) {
-				case 'Юр.лицо':
-					++$statistics['U_c'];
-					$statistics['U_s'] += $data['Сумма'];
-					break;
-				case 'Физ.лицо':
-					++$statistics['F_c'];
-					$statistics['F_s'] += $data['Сумма'];
-					break;
-				case 'ИП':
-					++$statistics['I_c'];
-					$statistics['I_s'] += $data['Сумма'];
-					break;
-			}
-		}
-		if ($data['Стадия'] === 'Провалена') {
-			++$statistics['B_c'];
-			$statistics['B_s'] += $data['Сумма'];
-		}
-		if ($data['Стадия'] === 'На складе') {
-			++$statistics['Stock'];
+		switch ($data['Стадия']) {
+			case 'Успешна':
+				switch ($data['Тип клиента']) {
+					case 'Юр.лицо':
+						++$statistics['U_c'];
+						$statistics['U_s'] += $data['Сумма'];
+						break;
+					case 'Физ.лицо':
+						++$statistics['F_c'];
+						$statistics['F_s'] += $data['Сумма'];
+						break;
+					case 'ИП':
+						++$statistics['I_c'];
+						$statistics['I_s'] += $data['Сумма'];
+						break;
+				}
+				break;
+			case 'Провалена':
+				++$statistics['B_c'];
+				$statistics['B_s'] += $data['Сумма'];
+				break;
+			case 'Новая':
+				$chartStage['Новая'] += $data['Сумма'];
+				break;
+			case 'В работе':
+				$chartStage['В работе'] += $data['Сумма'];
+				break;
+			case 'Оплачено':
+				$chartStage['Оплачено'] += $data['Сумма'];
+				break;
+			case 'На складе':
+				++$statistics['Stock'];
+				$chartStage['На складе'] += $data['Сумма'];
+				break;
 		}
 	}
 	$userStat[] = $statistics;
 }
 
 ## ответ
-$response = ["aaData" => $userStat];
+$response = ["aaData" => $userStat, "chart" => $chartStage];
 
 echo json_encode($response);
