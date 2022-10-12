@@ -31,12 +31,12 @@ function table(first_date = '', last_date = '') {
 		},
 		'columns': [
 			{data: 'Employee'},
-			{data: 'U_c'},
-			{data: 'U_s'},
-			{data: 'F_c'},
-			{data: 'F_s'},
-			{data: 'I_c'},
-			{data: 'I_s'},
+			{data: 'U_c', className: "U-col"},
+			{data: 'U_s', className: "U-col"},
+			{data: 'F_c', className: "F-col"},
+			{data: 'F_s', className: "F-col"},
+			{data: 'I_c', className: "I-col"},
+			{data: 'I_s', className: "I-col"},
 			{data: 'Stock'},
 			{data: 'B_c'},
 			{data: 'B_s'},
@@ -44,14 +44,6 @@ function table(first_date = '', last_date = '') {
 		"drawCallback": function (settings) {
 		},
 		"initComplete": function (settings, json) {
-			let api = $('#myTable').dataTable().api();
-			/*api.columns([1, 3, 5]).every(function () {
-					if (this !== undefined) {
-						console.log(this);
-						this.style.backgroundColor = '#DCE9F5FF';
-						//this.css("background-color", "#DCE9F5FF");
-					}
-			})*/
 		},
 		"footerCallback": function (tfoot, data, start, end, display) {
 			let api = $('#myTable').dataTable().api();
@@ -59,7 +51,9 @@ function table(first_date = '', last_date = '') {
 			api.columns([1, 3, 5], {order: 'current', search: 'applied', page: 'current'}).every(function () {
 				if (this.data().length) {
 					let sum = this.data().reduce(function (a, b) {
-						return a + b;
+						a = `${a}`.match(/\d/);
+						b = `${b}`.match(/\d/);
+						return Number(a) + Number(b);
 					});
 					Dtotal += sum;
 				}
@@ -79,6 +73,11 @@ function table(first_date = '', last_date = '') {
 	});
 }
 
+function strip(html) {
+	var tmp = document.createElement("td");
+	tmp.innerHTML = html;
+	return tmp.textContent || tmp.innerText;
+}
 
 /*$.fn.dataTable.Api.register('sum()', function () {
 		let sum = 0;

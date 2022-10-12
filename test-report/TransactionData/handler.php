@@ -1,4 +1,5 @@
 <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php"); ?>
+
 <?php
 
 \Bitrix\Main\Loader::includeModule('crm');
@@ -31,13 +32,13 @@ if ($firstDate !== '' && $lastDate !== '') {
 		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID, 'BEGINDATE' => $firstDate, 'CLOSEDATE' => $lastDate],
 		false,
 		false,
-		['*', 'UF_CRM_1663748579248']);
+		['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
 } else {
 	$Deal = CCrmDeal::GetListEx([],
 		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID],
 		false,
 		false,
-		['*', 'UF_CRM_1663748579248']);
+		['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
 }
 
 $dealData = [];
@@ -75,11 +76,15 @@ while ($record = $Deal->Fetch()) {
 	$dealData["{$record['ASSIGNED_BY_NAME']} {$record['ASSIGNED_BY_LAST_NAME']}"][] = [
 		'ID сделки' => $record['ID'],
 		'Название сделки' => $record['TITLE'],
+		'ID клиента' => $record['CONTACT_ID'],
+		'Имя клиента' => $record['CONTACT_FULL_NAME'],
+		'Тип клиента' => $record['UF_CRM_1663748579248'],
+		'ID ответственного' => $record['ASSIGNED_BY_ID'],
 		'Дата начала' => $record['BEGINDATE'],
+		'Дата принятия в работу' => $record['UF_CRM_1663748459170'],
+		'Дата оплаты' => $record['UF_CRM_1663748481446'],
 		'Дата закрытия' => $record['CLOSEDATE'],
 		'Сумма' => $record['OPPORTUNITY'],
-		'ID клиента' => $record['CONTACT_ID'],
-		'Тип клиента' => $record['UF_CRM_1663748579248'],
 		'Стадия' => $record['STAGE_SEMANTIC_ID']
 	];
 }
@@ -87,28 +92,41 @@ $chartStage = ['Новая' => 0, 'В работе' => 0, 'Оплачено' => 
 $userStat = [];
 $mask = ['Employee' => '', 'U_c' => 0, 'U_s' => 0, 'F_c' => 0, 'F_s' => 0, 'I_c' => 0, 'I_s' => 0, 'Stock' => 0, 'B_c' => 0, 'B_s' => 0];
 foreach ($dealData as $user => $deals) {
+	//var_dump($user);
+	//var_dump($deals);
+	$U_c = 0;
+	$F_c = 0;
+	$I_c = 0;
+	$Stock = 0;
+	$B_c = 0;
 	$statistics = $mask;
 	foreach ($deals as $deal => $data) {
+		//var_dump($deal);
+		//var_dump($data);
 		$statistics['Employee'] = $user;
 		switch ($data['Стадия']) {
 			case 'Успешна':
 				switch ($data['Тип клиента']) {
 					case 'Юр.лицо':
-						++$statistics['U_c'];
+						$statistics['U_c'] = '<a href="detalization.php?user_id=' . $data['ID ответственного'] . '">' . ++$U_c . '</a>';
+						//++$statistics['U_c'];
 						$statistics['U_s'] += $data['Сумма'];
 						break;
 					case 'Физ.лицо':
-						++$statistics['F_c'];
+						$statistics['F_c'] = '<a href="detalization.php?user_id=' . $data['ID ответственного'] . '">' . ++$F_c . '</a>';
+						//++$statistics['F_c'];
 						$statistics['F_s'] += $data['Сумма'];
 						break;
 					case 'ИП':
-						++$statistics['I_c'];
+						$statistics['I_c'] = '<a href="detalization.php?user_id=' . $data['ID ответственного'] . '">' . ++$I_c . '</a>';
+						//++$statistics['I_c'];
 						$statistics['I_s'] += $data['Сумма'];
 						break;
 				}
 				break;
 			case 'Провалена':
-				++$statistics['B_c'];
+				$statistics['B_c'] = '<a href="detalization.php">' . ++$B_c . '</a>';
+				//++$statistics['B_c'];
 				$statistics['B_s'] += $data['Сумма'];
 				break;
 			case 'Новая':
@@ -121,7 +139,8 @@ foreach ($dealData as $user => $deals) {
 				$chartStage['Оплачено'] += $data['Сумма'];
 				break;
 			case 'На складе':
-				++$statistics['Stock'];
+				$statistics['Stock'] = '<a href="detalization.php">' . ++$Stock . '</a>';
+				//++$statistics['Stock'];
 				$chartStage['На складе'] += $data['Сумма'];
 				break;
 		}

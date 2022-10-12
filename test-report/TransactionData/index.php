@@ -21,7 +21,7 @@ foreach ($usersList as $key => $value) {
 	$usersID[] = $value['id'];
 }
 
-$Deal = CCrmDeal::GetListEx([], ['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID], false, false, ['*', 'UF_CRM_1663748579248']);
+$Deal = CCrmDeal::GetListEx([], ['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID], false, false, ['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
 $dealData = [];
 while ($row = $Deal->Fetch()) {
 	if ($row['UF_CRM_1663748579248'] === '5922') {
@@ -46,11 +46,14 @@ while ($row = $Deal->Fetch()) {
 
 	$dealData["{$row['ASSIGNED_BY_NAME']} {$row['ASSIGNED_BY_LAST_NAME']}"][] = ['ID сделки' => $row['ID'],
 		'Название сделки' => $row['TITLE'],
+	    'ID клиента' => $row['CONTACT_ID'],
+	    'Имя контакта' => $row['CONTACT_FULL_NAME'],
+	    'Тип клиента' => $row['UF_CRM_1663748579248'],
 		'Дата начала' => $row['BEGINDATE'],
-		'Дата закрытия' => $row['CLOSEDATE'],
+	    'Дата принятия в работу' => $row['UF_CRM_1663748459170'],
+	    'Дата оплаты' => $row['UF_CRM_1663748481446'],
+        'Дата закрытия' => $row['CLOSEDATE'],
 		'Сумма' => $row['OPPORTUNITY'],
-		'ID клиента' => $row['CONTACT_ID'],
-		'Тип клиента' => $row['UF_CRM_1663748579248'],
 		'Стадия' => $row['STAGE_SEMANTIC_ID']];
 	$dealData["{$row['ASSIGNED_BY_NAME']} {$row['ASSIGNED_BY_LAST_NAME']}"][] = $row;
 }
@@ -107,6 +110,7 @@ foreach ($dealData as $user => $deals) {
               href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css"
               href="https://cdn.datatables.net/v/bs5/dt-1.12.1/date-1.1.2/sb-1.3.4/sp-2.0.2/datatables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="styles/style.css">
 
         <script type=" text/javascript"
                 src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
