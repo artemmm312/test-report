@@ -13,3 +13,23 @@ td.I-col {
 td.Total {
 background-color: rgba(189, 250, 228, 0.7);
 }
+.fromDate {
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+    margin: 10px;
+}
+.toDate {
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+    margin: 10px;
+}
+
+#done {
+    margin: 10px 20px 20px 20px;
+}
+
+#chartStage {
+    margin-top: 20px;
+}

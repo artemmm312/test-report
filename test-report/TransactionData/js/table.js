@@ -10,9 +10,13 @@ $(document).ready(function () {
 		if (first_date != '' && last_date != '') {
 			$('#myTable').DataTable().destroy();
 			table(first_date, last_date);
+			$('.banner').html(`Статистика сотрудников в период с ${first_date} по ${last_date}`);
+			$("#first_date").val('');
+			$("#last_date").val('');
 		} else {
 			$('#myTable').DataTable().destroy();
 			table();
+			$('.banner').html(`Статистика пользователей за весь период`);
 		}
 	});
 });

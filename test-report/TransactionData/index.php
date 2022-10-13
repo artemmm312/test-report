@@ -129,17 +129,20 @@ foreach ($dealData as $user => $deals) {
     <body>
     <div class="container">
         <form class="variableDate" id="Date" method="post">
-            <div class="fromDate">
-                <label>Введите начальную дату:</label><br/>
-                <input type="date" id="first_date" name="first_date"><br>
+            <div class="DateSet">
+                <div class="fromDate">
+                    <label>Введите начальную дату:</label>
+                    <input type="date" id="first_date" name="first_date">
+                </div>
+                <div class="toDate">
+                    <label>Введите конечную дату:</label>
+                    <input type="date" id="last_date" name="last_date">
+                </div>
             </div>
-            <div class="toDate">
-                <label>Введите конечную дату:</label><br/>
-                <input type="date" id="last_date" name="last_date"><br>
-            </div>
-            <input class="chekDate" type="submit" name="done" id="done" value="Показать диапазон"><br>
+            <input class="btn btn-primary" type="submit" name="done" id="done" value="Показать диапазон">
         </form>
     </div>
+    <p class="banner">Статистика пользователей за весь период</p>
     <div class="container">
         <table id="myTable" class="table table-hover table-bordered border border-dark">
             <thead class="align-middle">
