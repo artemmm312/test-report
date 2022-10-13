@@ -1,7 +1,7 @@
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php"); ?>
 
 <?php
-\Bitrix\Main\Loader::includeModule('crm');
+//\Bitrix\Main\Loader::includeModule('crm');
 
 /*use Bitrix\Crm\Category\DealCategory;
 $StageList = DealCategory::getStageList('16');
@@ -96,7 +96,7 @@ foreach ($dealData as $user => $deals) {
 ?>
 
     <!doctype html>
-    <html lang="en">
+    <html lang="ru">
 
     <head>
         <meta charset="UTF-8">
@@ -104,8 +104,6 @@ foreach ($dealData as $user => $deals) {
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Document</title>
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.rtl.min.css">-->
-
         <link rel="stylesheet" type="text/css"
               href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css"
@@ -114,9 +112,6 @@ foreach ($dealData as $user => $deals) {
 
         <script type=" text/javascript"
                 src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-        <!--<script type=" text/javascript"
-                src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>-->
 
         <script type="text/javascript"
                 src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
@@ -185,11 +180,11 @@ foreach ($dealData as $user => $deals) {
         </table>
     </div>
 
-    <div class="chart1">
-        <canvas id="testChart1"></canvas>
+    <div class="container">
+        <canvas id="chartStage"></canvas>
     </div>
 
-    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/table.js"></script>
     <script type="text/javascript" src="js/schedule.js"></script>
     </body>
     </html>

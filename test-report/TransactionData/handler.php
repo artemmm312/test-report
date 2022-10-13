@@ -4,10 +4,6 @@
 
 \Bitrix\Main\Loader::includeModule('crm');
 
-/*use Bitrix\Crm\Category\DealCategory;
-$StageList = DealCategory::getStageList('16');*/
-//$typeClient = ['ИП' => '5922', 'Юр.лицо' => '5921', 'Физ.лицо' => '5920'];
-
 $fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
 $usersList = null;
 while (!feof($fd)) {
@@ -92,8 +88,6 @@ $chartStage = ['Новая' => 0, 'В работе' => 0, 'Оплачено' => 
 $userStat = [];
 $mask = ['Employee' => '', 'U_c' => 0, 'U_s' => 0, 'F_c' => 0, 'F_s' => 0, 'I_c' => 0, 'I_s' => 0, 'Stock' => 0, 'B_c' => 0, 'B_s' => 0];
 foreach ($dealData as $user => $deals) {
-	//var_dump($user);
-	//var_dump($deals);
 	$U_c = 0;
 	$F_c = 0;
 	$I_c = 0;
@@ -101,32 +95,46 @@ foreach ($dealData as $user => $deals) {
 	$B_c = 0;
 	$statistics = $mask;
 	foreach ($deals as $deal => $data) {
-		//var_dump($deal);
-		//var_dump($data);
 		$statistics['Employee'] = $user;
 		switch ($data['Стадия']) {
 			case 'Успешна':
 				switch ($data['Тип клиента']) {
 					case 'Юр.лицо':
-						$statistics['U_c'] = '<a href="detalization.php?user_id=' . $data['ID ответственного'] . '">' . ++$U_c . '</a>';
-						//++$statistics['U_c'];
+						if ($statistics['U_c']) {
+							$str = "&deals_id[]=" . $data['ID сделки'] . '&">' . ++$U_c . '</a>';
+							$statistics['U_c'] = substr_replace($statistics['U_c'], $str, strrpos($statistics['U_c'], '&', -1));
+						} else {
+							$statistics['U_c'] = '<a href="detalization.php?deals_id[]=' . $data['ID сделки'] . '&">' . ++$U_c . '</a>';
+						}
 						$statistics['U_s'] += $data['Сумма'];
 						break;
 					case 'Физ.лицо':
-						$statistics['F_c'] = '<a href="detalization.php?user_id=' . $data['ID ответственного'] . '">' . ++$F_c . '</a>';
-						//++$statistics['F_c'];
+						if ($statistics['F_c']) {
+							$str = "&deals_id[]=" . $data['ID сделки'] . '&">' . ++$F_c . '</a>';
+							$statistics['F_c'] = substr_replace($statistics['F_c'], $str, strrpos($statistics['F_c'], '&', -1));
+						} else {
+							$statistics['F_c'] = '<a href="detalization.php?deals_id[]=' . $data['ID сделки'] . '&">' . ++$F_c . '</a>';
+						}
 						$statistics['F_s'] += $data['Сумма'];
 						break;
 					case 'ИП':
-						$statistics['I_c'] = '<a href="detalization.php?user_id=' . $data['ID ответственного'] . '">' . ++$I_c . '</a>';
-						//++$statistics['I_c'];
+						if ($statistics['I_c']) {
+							$str = "&deals_id[]=" . $data['ID сделки'] . '&">' . ++$I_c . '</a>';
+							$statistics['I_c'] = substr_replace($statistics['I_c'], $str, strrpos($statistics['I_c'], '&', -1));
+						} else {
+							$statistics['I_c'] = '<a href="detalization.php?deals_id[]=' . $data['ID сделки'] . '&">' . ++$I_c . '</a>';
+						}
 						$statistics['I_s'] += $data['Сумма'];
 						break;
 				}
 				break;
 			case 'Провалена':
-				$statistics['B_c'] = '<a href="detalization.php">' . ++$B_c . '</a>';
-				//++$statistics['B_c'];
+				if ($statistics['B_c']) {
+					$str = "&deals_id[]=" . $data['ID сделки'] . '&">' . ++$B_c . '</a>';
+					$statistics['B_c'] = substr_replace($statistics['B_c'], $str, strrpos($statistics['B_c'], '&', -1));
+				} else {
+					$statistics['B_c'] = '<a href="detalization.php?deals_id[]=' . $data['ID сделки'] . '&">' . ++$B_c . '</a>';
+				}
 				$statistics['B_s'] += $data['Сумма'];
 				break;
 			case 'Новая':
@@ -139,8 +147,12 @@ foreach ($dealData as $user => $deals) {
 				$chartStage['Оплачено'] += $data['Сумма'];
 				break;
 			case 'На складе':
-				$statistics['Stock'] = '<a href="detalization.php">' . ++$Stock . '</a>';
-				//++$statistics['Stock'];
+				if ($statistics['Stock']) {
+					$str = "&deals_id[]=" . $data['ID сделки'] . '&">' . ++$Stock . '</a>';
+					$statistics['Stock'] = substr_replace($statistics['Stock'], $str, strrpos($statistics['Stock'], '&', -1));
+				} else {
+					$statistics['Stock'] = '<a href="detalization.php?deals_id[]=' . $data['ID сделки'] . '&">' . ++$Stock . '</a>';
+				}
 				$chartStage['На складе'] += $data['Сумма'];
 				break;
 		}

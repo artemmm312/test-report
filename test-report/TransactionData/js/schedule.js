@@ -1,4 +1,4 @@
-var testChart;
+var chartStage;
 
 $(document).ready(function () {
 	$.ajax({
@@ -11,7 +11,6 @@ $(document).ready(function () {
 			let Data = JSON.parse(response);
 
 			let chartData = Data.chart;
-			console.log(chartData);
 			let xData = [];
 			let yData = [];
 			for (let key in chartData) {
@@ -19,11 +18,11 @@ $(document).ready(function () {
 				yData.push(chartData[key]);
 			}
 
-			if (testChart) {
-				testChart.destroy();
+			if (chartStage) {
+				chartStage.destroy();
 			}
 
-			testChart = new Chart($("#testChart1"), {
+			chartStage = new Chart($("#chartStage"), {
 				type: 'bar',
 				data: {
 					labels: xData, //ось x

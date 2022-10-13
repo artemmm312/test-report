@@ -47,37 +47,32 @@ function table(first_date = '', last_date = '') {
 		},
 		"footerCallback": function (tfoot, data, start, end, display) {
 			let api = $('#myTable').dataTable().api();
-			let Dtotal = 0;
+			let DealsTotal = 0;
 			api.columns([1, 3, 5], {order: 'current', search: 'applied', page: 'current'}).every(function () {
 				if (this.data().length) {
 					let sum = this.data().reduce(function (a, b) {
-						a = `${a}`.match(/\d/);
-						b = `${b}`.match(/\d/);
+						a = `${a}`.replace(/<[^>]*>/g, '');
+						b = `${b}`.replace(/<[^>]*>/g, '');
 						return Number(a) + Number(b);
 					});
-					Dtotal += sum;
+					DealsTotal += sum;
 				}
 			});
-			$('.Total').html(Dtotal);
-			let Dsum = 0;
+			$('.Total').html(DealsTotal);
+			let DealsSum = 0;
 			api.columns([2, 4, 6], {order: 'current', search: 'applied', page: 'current'}).every(function () {
 				if (this.data().length) {
 					let sum = this.data().reduce(function (a, b) {
 						return a + b;
 					});
-					Dsum += sum;
+					DealsSum += sum;
 				}
 			});
-			$('.Sum').html(Dsum);
+			$('.Sum').html(DealsSum);
 		},
 	});
 }
 
-function strip(html) {
-	var tmp = document.createElement("td");
-	tmp.innerHTML = html;
-	return tmp.textContent || tmp.innerText;
-}
 
 /*$.fn.dataTable.Api.register('sum()', function () {
 		let sum = 0;
