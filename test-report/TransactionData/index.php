@@ -95,7 +95,24 @@ foreach ($dealData as $user => $deals) {
 //'UF_CRM_1663748579248' поля тип клиента
 ?>
 
-    <!doctype html>
+<?php
+$fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
+$usersList = null;
+while (!feof($fd)) {
+	$usersList = json_decode(fgets($fd), true);
+}
+fclose($fd);
+
+$usersID = [];
+foreach ($usersList as $key => $value) {
+	$usersID[] = $value['id'];
+}
+global $USER;
+
+$userId = $USER->GetID();
+
+if (in_array($userId, $usersID, false)) {
+	echo '<!doctype html>
     <html lang="ru">
 
     <head>
@@ -139,11 +156,12 @@ foreach ($dealData as $user => $deals) {
                     <input type="date" id="last_date" name="last_date">
                 </div>
             </div>
-            <input class="btn btn-primary" type="submit" name="done" id="done" value="Показать диапазон">
+            <input class="btn btn-primary" type="submit" name="done" id="done" value="Показать диапазон по выбранным датам">
         </form>
     </div>
-    <p class="banner">Статистика пользователей за весь период</p>
+
     <div class="container">
+        <p class="banner">Статистика пользователей за весь период</p>
         <table id="myTable" class="table table-hover table-bordered border border-dark">
             <thead class="align-middle">
             <tr>
@@ -190,6 +208,10 @@ foreach ($dealData as $user => $deals) {
     <script type="text/javascript" src="js/table.js"></script>
     <script type="text/javascript" src="js/schedule.js"></script>
     </body>
-    </html>
+    </html>';
+} else {
+	echo "К сожалению у вас нет доступа к этим данным (=";
+}
+?>
 
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
