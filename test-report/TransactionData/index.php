@@ -107,6 +107,10 @@ $usersID = [];
 foreach ($usersList as $key => $value) {
 	$usersID[] = $value['id'];
 }
+
+$admins = [158, 132, 92];
+$usersID = array_merge($admins, $usersID);
+
 global $USER;
 
 $userId = $USER->GetID();
