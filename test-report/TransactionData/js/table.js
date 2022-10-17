@@ -54,12 +54,15 @@ function table(first_date = '', last_date = '') {
 			let DealsTotal = 0;
 			api.columns([1, 3, 5], {order: 'current', search: 'applied', page: 'current'}).every(function () {
 				if (this.data().length) {
+					console.log(this.data);
 					let sum = this.data().reduce(function (a, b) {
 						a = `${a}`.replace(/<[^>]*>/g, '');
 						b = `${b}`.replace(/<[^>]*>/g, '');
 						return Number(a) + Number(b);
+
 					});
-					DealsTotal += sum;
+					sum = `${sum}`.replace(/<[^>]*>/g, '');
+					DealsTotal += Number(sum);
 				}
 			});
 			$('.Total').html(DealsTotal);

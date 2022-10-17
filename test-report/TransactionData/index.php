@@ -148,6 +148,8 @@ if (in_array($userId, $usersID, false)) {
                 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
+    <script type="text/javascript" src="js/table.js"></script>
+    <script type="text/javascript" src="js/schedule.js"></script>
     <div class="container">
         <form class="variableDate" id="Date" method="post">
             <div class="DateSet">
@@ -208,9 +210,6 @@ if (in_array($userId, $usersID, false)) {
     <div class="container">
         <canvas id="chartStage"></canvas>
     </div>
-
-    <script type="text/javascript" src="js/table.js"></script>
-    <script type="text/javascript" src="js/schedule.js"></script>
     </body>
     </html>';
 } else {
