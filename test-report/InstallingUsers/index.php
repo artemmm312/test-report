@@ -96,6 +96,8 @@ if (in_array($userId, $usersID, false)) {
 <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>';
+} else {
+	echo "К сожалению у вас нет доступа к этим данным (=";
 }
 ?>
 
