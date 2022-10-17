@@ -23,15 +23,31 @@ if (!empty($_POST['first_date']) && !empty($_POST['last_date'])) {
 	$lastDate = date("d.m.Y", strtotime($_POST['first_date']));
 }
 
+$admins = [158, 132, 92];
+
+global $USER;
+$userId = $USER->GetID();
+
+$index = 0;
+if (array_search($userId, $usersID, false)) {
+	$index = array_search($userId, $usersID, false);
+	$search = $usersID[$index];
+	if (in_array($usersID[$index], $admins, false)) {
+		$search = $usersID;
+	}
+} else {
+	$search = $usersID;
+}
+
 if ($firstDate !== '' && $lastDate !== '') {
 	$Deal = CCrmDeal::GetListEx([],
-		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID, 'BEGINDATE' => $firstDate, 'CLOSEDATE' => $lastDate],
+		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $search, 'BEGINDATE' => $firstDate, 'CLOSEDATE' => $lastDate],
 		false,
 		false,
 		['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
 } else {
 	$Deal = CCrmDeal::GetListEx([],
-		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID],
+		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $search],
 		false,
 		false,
 		['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
