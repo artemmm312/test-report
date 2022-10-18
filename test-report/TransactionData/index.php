@@ -1,101 +1,6 @@
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php"); ?>
 
 <?php
-//\Bitrix\Main\Loader::includeModule('crm');
-
-/*use Bitrix\Crm\Category\DealCategory;
-$StageList = DealCategory::getStageList('16');
-var_dump($StageList);*/
-//$typeClient = ['ИП' => '5922', 'Юр.лицо' => '5921', 'Физ.лицо' => '5920'];
-
-
-/*$fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
-$usersList = null;
-while (!feof($fd)) {
-	$usersList = json_decode(fgets($fd), true);
-}
-fclose($fd);
-
-$usersID = [];
-foreach ($usersList as $key => $value) {
-	$usersID[] = $value['id'];
-}
-
-$Deal = CCrmDeal::GetListEx([], ['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $usersID], false, false, ['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
-$dealData = [];
-while ($row = $Deal->Fetch()) {
-	if ($row['UF_CRM_1663748579248'] === '5922') {
-		$row['UF_CRM_1663748579248'] = 'ИП';
-	}
-	if ($row['UF_CRM_1663748579248'] === '5921') {
-		$row['UF_CRM_1663748579248'] = 'Юр.лицо';
-	}
-	if ($row['UF_CRM_1663748579248'] === '5920') {
-		$row['UF_CRM_1663748579248'] = 'Физ.лицо';
-	}
-
-	if ($row['STAGE_SEMANTIC_ID'] === 'S') {
-		$row['STAGE_SEMANTIC_ID'] = 'Успешна';
-	} elseif ($row['STAGE_SEMANTIC_ID'] === 'F') {
-		$row['STAGE_SEMANTIC_ID'] = 'Провалена';
-	} elseif ($row['STAGE_SEMANTIC_ID'] === 'P' && $row['STAGE_ID'] === 'C16:1') {
-		$row['STAGE_SEMANTIC_ID'] = 'На складе';
-	} else {
-		$row['STAGE_SEMANTIC_ID'] = 'В работе';
-	}
-
-	$dealData["{$row['ASSIGNED_BY_NAME']} {$row['ASSIGNED_BY_LAST_NAME']}"][] = ['ID сделки' => $row['ID'],
-		'Название сделки' => $row['TITLE'],
-	    'ID клиента' => $row['CONTACT_ID'],
-	    'Имя контакта' => $row['CONTACT_FULL_NAME'],
-	    'Тип клиента' => $row['UF_CRM_1663748579248'],
-		'Дата начала' => $row['BEGINDATE'],
-	    'Дата принятия в работу' => $row['UF_CRM_1663748459170'],
-	    'Дата оплаты' => $row['UF_CRM_1663748481446'],
-        'Дата закрытия' => $row['CLOSEDATE'],
-		'Сумма' => $row['OPPORTUNITY'],
-		'Стадия' => $row['STAGE_SEMANTIC_ID']];
-	$dealData["{$row['ASSIGNED_BY_NAME']} {$row['ASSIGNED_BY_LAST_NAME']}"][] = $row;
-}
-var_dump($dealData);*/
-/*$userStat = [];
-$mask = ['Employee' => '', 'U_c' => 0, 'U_s' => 0, 'F_c' => 0, 'F_s' => 0, 'I_c' => 0, 'I_s' => 0, 'Stock' => 0, 'B_c' => 0, 'B_s' => 0];
-foreach ($dealData as $user => $deals) {
-	$statistics = $mask;
-	foreach ($deals as $deal => $data) {
-        $statistics['Employee'] = $user;
-		if ($data['Стадия'] === 'Успешна') {
-			switch ($data['Тип клиента']) {
-				case 'Юр.лицо':
-					++$statistics['U_c'];
-					$statistics['U_s'] += $data['Сумма'];
-					break;
-				case 'Физ.лицо':
-					++$statistics['F_c'];
-					$statistics['F_s'] += $data['Сумма'];
-					break;
-				case 'ИП':
-					++$statistics['I_c'];
-					$statistics['I_s'] += $data['Сумма'];
-					break;
-			}
-		}
-		if ($data['Стадия'] === 'Провалена') {
-			++$statistics['B_c'];
-			$statistics['B_s'] += $data['Сумма'];
-		}
-		if ($data['Стадия'] === 'На складе') {
-			++$statistics['Stock'];
-		}
-	}
-	$userStat[] = $statistics;
-}*/
-//var_dump($userStat);
-
-//'UF_CRM_1663748579248' поля тип клиента
-?>
-
-<?php
 $fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
 $usersList = null;
 while (!feof($fd)) {
@@ -112,7 +17,6 @@ $admins = [158, 132, 92];
 $usersID = array_merge($admins, $usersID);
 
 global $USER;
-
 $userId = $USER->GetID();
 
 if (in_array($userId, $usersID, false)) {

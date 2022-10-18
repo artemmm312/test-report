@@ -1,7 +1,6 @@
 <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php"); ?>
 
 <?php
-
 \Bitrix\Main\Loader::includeModule('crm');
 
 $fd = fopen("../InstallingUsers/usersList/usersList.json", 'r') or die("не удалось открыть файл");
@@ -16,13 +15,6 @@ foreach ($usersList as $key => $value) {
 	$usersID[] = $value['id'];
 }
 
-$firstDate = '';
-$lastDate = '';
-if (!empty($_POST['first_date']) && !empty($_POST['last_date'])) {
-	$firstDate = date("d.m.Y", strtotime($_POST['first_date']));
-	$lastDate = date("d.m.Y", strtotime($_POST['first_date']));
-}
-
 $admins = [158, 132, 92];
 
 global $USER;
@@ -31,23 +23,30 @@ $userId = $USER->GetID();
 $index = 0;
 if (array_search($userId, $usersID, false)) {
 	$index = array_search($userId, $usersID, false);
-	$search = $usersID[$index];
+	$searchUser = $usersID[$index];
 	if (in_array($usersID[$index], $admins, false)) {
-		$search = $usersID;
+		$searchUser = $usersID;
 	}
 } else {
-	$search = $usersID;
+	$searchUser = $usersID;
+}
+
+$firstDate = '';
+$lastDate = '';
+if (!empty($_POST['first_date']) && !empty($_POST['last_date'])) {
+	$firstDate = date("d.m.Y", strtotime($_POST['first_date']));
+	$lastDate = date("d.m.Y", strtotime($_POST['first_date']));
 }
 
 if ($firstDate !== '' && $lastDate !== '') {
 	$Deal = CCrmDeal::GetListEx([],
-		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $search, 'BEGINDATE' => $firstDate, 'CLOSEDATE' => $lastDate],
+		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $searchUser, 'BEGINDATE' => $firstDate, 'CLOSEDATE' => $lastDate],
 		false,
 		false,
 		['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);
 } else {
 	$Deal = CCrmDeal::GetListEx([],
-		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $search],
+		['CATEGORY_ID' => '16', 'ASSIGNED_BY_ID' => $searchUser],
 		false,
 		false,
 		['*', 'UF_CRM_1663748579248', 'UF_CRM_1663748459170', 'UF_CRM_1663748481446']);

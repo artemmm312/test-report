@@ -59,7 +59,6 @@ function table(first_date = '', last_date = '') {
 						a = `${a}`.replace(/<[^>]*>/g, '');
 						b = `${b}`.replace(/<[^>]*>/g, '');
 						return Number(a) + Number(b);
-
 					});
 					sum = `${sum}`.replace(/<[^>]*>/g, '');
 					DealsTotal += Number(sum);
@@ -72,7 +71,7 @@ function table(first_date = '', last_date = '') {
 					let sum = this.data().reduce(function (a, b) {
 						return a + b;
 					});
-					DealsSum += sum;
+					DealsSum += Number(sum);
 				}
 			});
 			$('.Sum').html(DealsSum);
