@@ -59,11 +59,11 @@ if (in_array($userId, $usersID, false)) {
             <div class="DateSet">
                 <div class="fromDate">
                     <label>Введите начальную дату:</label>
-                    <input type="date" id="first_date" name="first_date">
+                    <input type="date" class="form-control" id="first_date" name="first_date">
                 </div>
                 <div class="toDate">
                     <label>Введите конечную дату:</label>
-                    <input type="date" id="last_date" name="last_date">
+                    <input type="date" class="form-control" id="last_date" name="last_date">
                 </div>
             </div>
             <input class="btn btn-primary" type="submit" name="done" id="done" value="Показать диапазон по выбранным датам">
